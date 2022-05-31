@@ -5,7 +5,7 @@
 　・チェックボックスにチェックが入っているかアイテムをグレーアウトする
 */
 import {useState} from 'react'
-function TodoItem({key, item}) {
+function TodoItem({item}) {
 
   const [toggleGreyText, setToggleGreyText] = useState(false)
   const handleItemClick = () => {

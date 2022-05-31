@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 /* 
   【Todoのデータ構成】
 　・key：Todoを特定するID（String）
@@ -27,11 +26,17 @@ function Todo() {
     /* テストコード 終了 */
   ]);
 
+  const updateItems = (item) => {
+    const item_ = {key: getKey(), text:item, done:false}
+    putItems([... items, item_])
+  }
+
   return (
     <div className="panel">
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
+      <Input updateItems={updateItems}/>
       {items.map(item => (
         <TodoItem
           key={item.key}
