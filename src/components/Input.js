@@ -34,7 +34,7 @@ function Input( {updateItems} ) {
   }
   return (
     <div className="panel-block">
-      <form onSubmit = {handleSubmit}>
+      <form onSubmit = {handleSubmit} style={{width: '100%'}}>
         <label>
         <input onChange={handleOnChange} className="input" type="text" value={item}></input>
         </label>

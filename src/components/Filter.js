@@ -4,9 +4,17 @@
 　・タブで表示する
 　・サポートするステータスは「すべて」「未完了」「完了済み」
 */
-function Filter(  ) {
+import {useState} from 'react'
+
+function Filter( {id, currentTab, handleOnClickTab} ) {
+  
   return (
-    <div className="panel-tabs">
+    <div className="tabs is-centered">
+      <ul>
+        <li onClick = {handleOnClickTab} id={id[0]} className={currentTab == 0 ? `is-active` : ''}><a>全て</a></li>
+        <li onClick = {handleOnClickTab} id={id[1]} className={currentTab == 1 ? `is-active` : ''}><a>未完了</a></li>
+        <li onClick = {handleOnClickTab} id={id[2]} className={currentTab == 2 ? `is-active` : ''}><a>完了済み</a></li>
+      </ul>
     </div>
   );
 }

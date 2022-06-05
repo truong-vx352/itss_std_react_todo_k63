@@ -7,14 +7,17 @@
 import {useState} from 'react'
 function TodoItem({item}) {
 
-  const [toggleGreyText, setToggleGreyText] = useState(false)
+  const [toggleGreyText, setToggleGreyText] = useState(item.done)
   const handleItemClick = () => {
+      item.done = !item.done
       setToggleGreyText(!toggleGreyText)
   }
   
   return (
     <label className={`${toggleGreyText ? 'has-text-grey-light' : ''} panel-block`}>
-            <input onClick={handleItemClick} type="checkbox" />
+            <input onClick={handleItemClick} type="checkbox" 
+              checked={item.done ? "checked" : ""}
+              />
             {item.text}
     </label>
   );

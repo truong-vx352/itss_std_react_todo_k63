@@ -18,6 +18,8 @@ import useStorage from '../hooks/storage';
 import {getKey} from "../lib/util";
 
 function Todo() {
+  const [currentTab, setCurrentTab] = useState(0)
+  const id = [0,1,2]
   const [items, putItems] = React.useState([
       /* テストコード 開始 */
     { key: getKey(), text: '日本語の宿題', done: false },
@@ -31,21 +33,60 @@ function Todo() {
     putItems([... items, item_])
   }
 
+  const handleOnClickTab = (e) => {
+    setCurrentTab(e.currentTarget.getAttribute('id'))
+  }
+
   return (
     <div className="panel">
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
+      <Filter handleOnClickTab={handleOnClickTab} currentTab={currentTab} id={id}/>
       <Input updateItems={updateItems}/>
-      {items.map(item => (
-        <TodoItem
-          key={item.key}
-          item={item}
-        />
-      ))}
-      <div className="panel-block">
-        {items.length} items
-      </div>
+      {currentTab == 0 && 
+        <>
+          {items.map(item => (
+            <TodoItem
+              key={item.key}
+              item={item}
+            />
+          ))}
+          <div className="panel-block">
+            {items.length} items
+          </div>
+        </>
+      }
+      {currentTab == 1 && 
+        <>
+          {items.filter(item => item.done === false).map(item => (
+            <TodoItem
+              key={item.key}
+              item={item}
+            />
+          ))}
+          {
+            <div className="panel-block">
+              {items.filter(item => item.done === false).length} items
+            </div>
+          }
+        </>
+      }
+      {currentTab == 2 && 
+        <>
+          {items.filter(item => item.done === true).map(item => (
+            <TodoItem
+              key={item.key}
+              item={item}
+            />
+          ))}
+          {
+            <div className="panel-block">
+              {items.filter(item => item.done === true).length} items
+            </div>
+          }
+        </>
+      }
     </div>
   );
 }
