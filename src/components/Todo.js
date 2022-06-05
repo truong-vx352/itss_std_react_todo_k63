@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 /* 
   【Todoのデータ構成】
 　・key：Todoを特定するID（String）
@@ -20,73 +20,62 @@ import {getKey} from "../lib/util";
 function Todo() {
   const [currentTab, setCurrentTab] = useState(0)
   const id = [0,1,2]
-  const [items, putItems] = React.useState([
-      /* テストコード 開始 */
-    { key: getKey(), text: '日本語の宿題', done: false },
-    { key: getKey(), text: 'reactを勉強する', done: false },
-    { key: getKey(), text: '明日の準備をする', done: false },
-    /* テストコード 終了 */
-  ]);
+  const [items, putItems, clearItems] = useStorage()
 
   const updateItems = (item) => {
     const item_ = {key: getKey(), text:item, done:false}
     putItems([... items, item_])
   }
 
+  
   const handleOnClickTab = (e) => {
     setCurrentTab(e.currentTarget.getAttribute('id'))
   }
 
+  const displayItems = () => {
+    return items.filter(item => {
+        if (currentTab == 0) return true;
+        if (currentTab == 1) return !item.done;
+        if (currentTab == 2) return item.done;
+      })
+  };
+
+  const handleItemClick = (item_) => {
+    putItems((items.map(item => {
+      if(item.key === item_.key) {
+        item.done = !item.done
+      }
+      return item
+    })))
+  }
+  
   return (
     <div className="panel">
+      
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
+      
       <Filter handleOnClickTab={handleOnClickTab} currentTab={currentTab} id={id}/>
+      
       <Input updateItems={updateItems}/>
-      {currentTab == 0 && 
-        <>
-          {items.map(item => (
-            <TodoItem
-              key={item.key}
-              item={item}
-            />
-          ))}
-          <div className="panel-block">
-            {items.length} items
-          </div>
-        </>
-      }
-      {currentTab == 1 && 
-        <>
-          {items.filter(item => item.done === false).map(item => (
-            <TodoItem
-              key={item.key}
-              item={item}
-            />
-          ))}
-          {
-            <div className="panel-block">
-              {items.filter(item => item.done === false).length} items
-            </div>
-          }
-        </>
-      }
-      {currentTab == 2 && 
-        <>
-          {items.filter(item => item.done === true).map(item => (
-            <TodoItem
-              key={item.key}
-              item={item}
-            />
-          ))}
-          {
-            <div className="panel-block">
-              {items.filter(item => item.done === true).length} items
-            </div>
-          }
-        </>
-      }
+      
+      {displayItems().map(item => (
+        <TodoItem
+          key={item.key}
+          item={item}
+          handleItemClick={handleItemClick}
+        />
+      ))}
+      
+      <div className="panel-block">
+        {displayItems().length} items
+      </div>
+      
+      <div className="panel-block">
+        <button onClick={() => {clearItems()}} className="button is-fullwidth is-light clearButton">全てのToDoを削除</button>
+      
+      </div>
     </div>
   );
 }

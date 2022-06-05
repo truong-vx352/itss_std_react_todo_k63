@@ -3,3 +3,7 @@
 .container {
   margin-top: 2rem;
 }
+
+.clearButton {
+  padding: 5px 10px;
+}
